@@ -1,0 +1,28 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top:1px solid #ccc;
+    border-left:1px solid #ccc;
+}
+.table td{
+    border-right:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    text-align: center;
+    line-height: 40px;
+}
+.line-box {
+    overflow: hidden;
+}
+.left-text {
+    float: left;
+    margin-right: 30px;
+}
+.radio-box {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.radio-box textarea{
+    border: 1px solid #ccc;
+    padding: 5px;
+}

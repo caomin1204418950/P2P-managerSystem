@@ -1,0 +1,15 @@
+
+<div class="imgScale" *ngIf="active">
+  <img src="../../../../assets/images/close.png" alt="" class="close" (click)="close()">
+  <p class="ms">双击放大图片</p>
+  <div class="swiper-container" [swiper]='config'>
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div class="swiper-zoom-container">
+          <img [src]="ImgUrl" alt="{{ImgUrl}}" class="active_img">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

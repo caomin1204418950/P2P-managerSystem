@@ -1,0 +1,109 @@
+<div class="head_box">
+    <div class="head_con">
+        <div class="logo fl">
+            <img src="../../../../assets/images/logo.png">
+            <span>获客管理后台</span>
+        </div>
+        <div class="head_right">
+            <!-- <div class="search fl">
+        <input class="fl" type="text" placeholder="请输入订单号快速搜索" [(ngModel)]="orderNo">
+        <img class="mr10 mt10 fl" (click)="search(1)" src="../../../../assets/images/search_icon_03.png">
+      </div> -->
+            <ul class="navLeft">
+                <li *ngFor="let item of AppList">
+                    <a href="{{item.appAddress}}">{{item.appName}}</a>
+                </li>
+            </ul>
+            <ul class="navRight">
+                <li class="user-profile header-notification ripple light">
+                    <a href="javascript:;" (click)="navShow(show)">
+                        <img class="mr10" src="../../../../assets/images/head_icon_03.png" alt="">
+                        <span style="margin-left:7px;margin-right: 7px;">{{userName}}</span>
+                        <img class="ml10" src="../../../../assets/images/head_arrow_06.png" alt="">
+                    </a>
+                    <ul class="show-notification profile-notification show"  *ngIf="show">
+                        <li class="ripple">
+                            <a (click)="mask=true;show=false;">
+                                <i class="icon iconfont icon-password" style="margin-right: 5px;"></i> 修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="ripple">
+                    <a href="javascript:;" (click)='getOff()'>
+                        <img class="mr10" src="../../../../assets/images/logOut_05.png"><span style="margin-left:7px;margin-right: 7px;">注销系统</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="mask" *ngIf="mask||mask2"></div>
+<div class="modal" *ngIf="mask">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">修改密码</h4>
+            <button type="button" class="close basic-close" (click)="mask=false;reset();pwdForm.reset()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="pwdForm" accept-charset='UTF-8'>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">原始密码</label>
+                    <div class="col-sm-9">
+                        <input type="password" placeholder="请输入原始密码" class="form-control" [(ngModel)]="pwd.origPwd"
+                            id="origPwd" required formControlName="origPwd">
+                        <div class="messages text-danger"
+                            *ngIf="pwdForm.controls.origPwd.dirty || pwdForm.controls.origPwd.touched">
+                            <span *ngIf="pwdForm.controls.origPwd.errors?.required">原始密码不能为空</span>
+                            <span *ngIf="pwdForm.controls.origPwd.errors?.pattern">密码由字母数字符号两种以上组合，长度不低于8</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">新密码</label>
+                    <div class="col-sm-9">
+                        <input type="password" placeholder="请输入新密码" class="form-control" [(ngModel)]="pwd.newPwd"
+                            id="newPwd" required formControlName="newPwd">
+                        <div class="messages text-danger"
+                            *ngIf="pwdForm.controls.newPwd.dirty || pwdForm.controls.newPwd.touched">
+                            <span *ngIf="pwdForm.controls.newPwd.errors?.required">新密码不能为空</span>
+                            <span *ngIf="pwdForm.controls.newPwd.errors?.pattern">密码由字母数字符号两种以上组合，长度不低于8</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">确认密码</label>
+                    <div class="col-sm-9">
+                        <input type="password" placeholder="确认新密码" class="form-control" [(ngModel)]="pwd.confPwd"
+                            id="confPwd" required formControlName="confPwd">
+                        <div class="messages text-danger"
+                            *ngIf="pwdForm.controls.confPwd.dirty || pwdForm.controls.confPwd.touched">
+                            <span *ngIf="pwdForm.controls.confPwd.errors?.required">确认新密码不能为空</span>
+                            <span *ngIf="pwdForm.controls.confPwd.errors?.pattern">密码由字母数字符号两种以上组合，长度不低于8</span> 
+                            <span
+                                *ngIf="(pwdForm.controls.newPwd.valid)&&(pwdForm.controls.confPwd.valid)&&(pwd.newPwd!=pwd.confPwd)">新密码与确认密码不一致</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-btn row">
+                    <button type="button" class="btn btn-primary btn-outline-primary ripple light"
+                        (click)="mask=false;reset();pwdForm.reset()">取消</button>
+                    <button type="button" class="btn btn-primary ripple light" (click)="mask=false;resetPwd()"
+                        [disabled]="!pwdForm.valid">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class='confirm' *ngIf="mask2">
+    <div class="header">
+        <span>提示</span>
+    </div>
+    <div class="body">
+        <span>{{reason}}</span>
+    </div>
+    <div class="footer">
+        <button type="button" (click)="mask=false;mask2=false;">确认</button>
+    </div>
+</div>

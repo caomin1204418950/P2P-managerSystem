@@ -1,0 +1,76 @@
+<app-crumb></app-crumb>
+<div class='title'>产品基本信息</div>
+<div class="white_bg list_box infor">
+    <ul class='data'>
+        <li>产品名称：{{data.product.name}}</li>
+        <li>产品编号：{{data.product.number}}</li>
+        <li>贷款期限范围：{{data.product.minTerm}}-{{data.product.maxTerm}}月</li>
+        <li>贷款金额范围：{{data.product.minAmount}}-{{data.product.maxAmount}}万</li>
+    </ul>
+    <ul class='data'>
+        <li>综合费率范围：{{data.product.minRate}}%-{{data.product.maxRate}}%</li>
+        <li>产品类型：{{productTypeName}}</li>
+    </ul>
+    <ul class='data'>
+        <li>
+            支持还款方式：<span style='margin-left:10px;' *ngFor='let list of repayMethodName'>{{list}}</span>
+        </li>
+    </ul>
+    <ul class='data'>
+        <li>产品描述：{{data.product.remark}}</li>
+    </ul>
+</div>
+<div class='title'>贷款利率配置</div>
+<table class='table'>
+    <tr class='tablehead'>
+        <td>条件表达式</td>
+        <td>费率</td>
+    </tr>
+    <tr class='tablebody' *ngFor='let list of data.interestConfig;let index=index'>
+        <td>{{list.spel}}</td>
+        <td>{{list.rate}}%</td>
+    </tr>
+</table>
+计息开始时间：{{interestStartTimeName}}
+<div class='title'>居间服务费配置</div>
+<table class='table'>
+    <tr class='tablehead'>
+        <td>条件表达式</td>
+        <td>费率</td>
+    </tr>
+    <tr class='tablebody' *ngFor='let list of data.serviceConfig;let index=index'>
+        <td>{{list.spel}}</td>
+        <td>占贷款总金额比率:{{list.rate}}%</td>
+    </tr>
+</table>
+服务费支付方式：{{paymentMethodName}}
+<div class='title'>保证金配置</div>
+<table class='table'>
+    <tr class='tablehead'>
+        <td>条件表达式</td>
+        <td>费率</td>
+    </tr>
+    <tr class='tablebody' *ngFor='let list of data.bondConfig;let index=index'>
+        <td>{{list.spel}}</td>
+        <td>占贷款总金额比率:{{list.rate}}%</td>
+    </tr>
+</table>
+<div class='title'>产品介绍</div>
+<div class='textarea'>
+    
+        <div [innerHTML]='data.product.productIntroduction'></div>
+    <!-- {{data.product.productIntroduction}} -->
+</div>
+<div class='title'>产品资料</div>
+<ul class='textarea'>
+    <li *ngFor='let list of data.material;let index=index'>
+            <div>
+                资料名称：{{list.name}}
+            </div>
+            <div [innerHTML]='list.value'></div>
+        <!-- <button>下载资料</button> -->
+    </li>
+</ul>
+<div class='buttom'>
+    <button (click)='back()'>返回列表</button>
+</div>

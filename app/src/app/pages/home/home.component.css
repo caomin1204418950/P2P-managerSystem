@@ -1,0 +1,7 @@
+.white_bg{height:calc(100% - 80px); margin-bottom:30px;padding-top: 60px;}
+.total{width: 340px;margin: 0 auto 80px;padding: 20px 0; text-align: center;background-color: #6666cc;color: #fff;}
+.total p,.list li div p{font-size: 48px;}
+.total span,.list li div span{font-size: 20px;}
+.list{overflow: hidden;}
+.list li{float: left;text-align: center;color: #fff;width: 25%;padding: 0 30px;margin-bottom: 30px}
+.list li div{background-color: #cc9966;padding: 20px 0;}

@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="routes" style="width:700px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <!-- <div class="row">
+      <div class="rowLeft">文章标题</div>
+      <input type="text" placeholder="文章标题" [(ngModel)]="title">
+    </div>
+    <div *ngIf="noTitle" class="showMsg"><span style="color:red;margin-left: 10px">文章标题不能为空</span></div>
+    <div *ngIf="!noTitle" class="whiteSpace"></div>
+    <div class="row">
+      <div class="rowLeft">文章来源</div>
+      <input type="text" placeholder="文章来源">
+    </div> -->
+    <form [formGroup]="form" accept-charset="utf-8">
+      <div class="form">
+        <div class="form-item">
+          <label>文章标题</label>
+          <div class="item-content"><input type="text" maxlength="200" [(ngModel)]="items.title" formControlName="title"
+              required placeholder="文章标题"></div>
+        </div>
+        <div class="message text-danger" *ngIf="(!form.controls.title.valid)&&(form.controls.title.dirty||form.controls.title.touched)">文章标题不能为空</div>
+        <div class="form-item">
+          <label>文章来源</label>
+          <div class="item-content"><input type="text" [(ngModel)]="items.originResource" formControlName="originResource"
+              required placeholder="文章来源"></div>
+        </div>
+        <div class="message text-danger" *ngIf="(!form.controls.originResource.valid)&&(form.controls.originResource.dirty||form.controls.originResource.touched)">文章标题不能为空</div>
+        <div class="form-item">
+            <label>文章类型</label>
+            <div class="item-content">
+              <select [(ngModel)]="items.type" formControlName="type">
+                <!-- <option value="1">1</option> -->
+                <option value="{{item.id}}" *ngFor="let item of typeList">{{item.fullName}}</option>
+              </select>
+            </div>
+          </div>
+        <div class="form-item">
+          <label>阅读量</label>
+          <div class="item-content"><input type="text" maxlength="100" [(ngModel)]="items.read" required placeholder="阅读量"
+              formControlName="read"></div>
+        </div>
+        <div class="message text-danger" *ngIf="(form.controls.read.dirty || form.controls.read.touched)">
+          <span *ngIf="form.controls.read.errors?.required">阅读量不能为空</span>
+          <span *ngIf="form.controls.read.errors?.pattern">阅读量只能为数字</span>
+        </div>
+        <div class="form-item">
+          <label>收藏量</label>
+          <div class="item-content"><input type="text" maxlength="100" [(ngModel)]="items.favorite" required placeholder="收藏量"
+              formControlName="favorite"></div>
+        </div>
+        <div class="message text-danger" *ngIf="(form.controls.favorite.dirty || form.controls.favorite.touched)">
+          <span *ngIf="form.controls.favorite.errors?.required">收藏量不能为空</span>
+          <span *ngIf="form.controls.favorite.errors?.pattern">收藏量只能为数字</span>
+        </div>
+        <div class="form-item">
+          <label>标签</label>
+          <div class="item-content">
+            <app-tag (outTags)="getTags($event)" ></app-tag>
+          </div>
+        </div>
+        <div class="form-item">
+          <label>封面图片</label>
+          <div class="item-content">
+            <span class="image-upload-tip">{{uploadMsg}}<i *ngIf="upload === 'uploading'" class="fa fa-spinner fa-spin"></i></span>
+            <a href="javascript:;" class="file">选择图片
+              <input type="file" (change)="previewImg($event)" accept="image/jpg,image/jpeg,image/png" capture="camera">
+            </a>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <img class="upload-image" [src]="defaultImgUrl" />
+        </div>
+        <div class="message text-danger" *ngIf="!form.controls.picture">图片必须上传</div>
+        <app-tiny-editor [elementId]="'my-editor'" (onEditorContentChange)="keyupHandler($event)" [initialContent]="items.content"></app-tiny-editor>
+        <div class="buttons">
+          <button nz-button nzType="primary" (click)="onSubmit(0)" [disabled]="!form.valid">保存修改</button>
+          <button nz-button nzType="primary" (click)="onSubmit(1)" [disabled]="!form.valid">立即发布</button>
+          <button nz-button nzType="primary" (click)="getTime()" [disabled]="!form.valid">定时发布</button>
+        </div>
+      </div>
+    </form>
+  </nz-card>
+  <nz-modal [(nzVisible)]="showTimePublish"  nzTitle="定时发布" (nzOnCancel)="TimepublishMoadleCancel()" (nzOnOk)="TimepublishMoadleOk()">
+    <div class="app-modal-body">
+      <!-- <form accept-charset ='UTF-8' (ngSubmit)="onSubmit()"> -->
+      <div class="form-group row">
+        <!-- <div class="content"> -->
+          <select class="form-control day" name="day" (change)="timeChange($event,'day')">
+            <option selected value="0">今天</option>
+            <option value="1">明天</option>
+            <option value="2">后天</option>
+          </select>
+          <select class="form-control hour" name="hours" (change)="timeChange($event,'hour')">
+            <option *ngFor="let item of time.hours" [value]="item" [selected]="item === time.selectedHour">{{item}}</option>
+          </select><span>时</span>
+          <select class="form-control minute" name="minutes" (change)="timeChange($event,'minute')">
+            <option *ngFor="let item of time.minutes" [value]="item" [selected]="item === time.selectedMinute">{{item}}</option>
+          </select><span>分</span>
+        <!-- </div> -->
+      </div>
+      <p>（只能选择5分钟-48小时范围内的时间）</p>
+      <!-- <p>本文将于{{time.timeString}}发布</p> -->
+      <!-- </form> -->
+    </div>
+  </nz-modal>
+</div>

@@ -1,0 +1,224 @@
+<app-crumb></app-crumb>
+<div class="white_bg list_box" style="margin-bottom:30px;" *ngIf="rows">
+  <div class="g_tit mb20">
+    <h5>营业执照信息</h5>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">企业名称</span>
+      <span class="value">{{rows.busCer.etpName}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">营业期限</span>
+      <span class="value">{{rows.busCer.busTerm}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">法定代表人</span>
+      <span class="value">{{rows.busCer.legalName}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">统一社会信用代码</span>
+      <span class="value">{{rows.busCer.creditCode}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline">
+      <span class="text">住所</span>
+      <span class="value">{{rows.busCer.address}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline picture">
+      <span class="textPic" style="text-align: left; padding-left: 20px;">营业执照上传件</span>
+      <span class="value">
+        <img src="{{rows.busCer.busUrl}}" alt="{{rows.busCer.busUrl}}" class="cur_img" (click)="imgScale(rows.busCer.busUrl)">
+      </span>
+      <span class="textPic ms">点击放大查看</span>
+    </div>
+  </div>
+</div>
+<div class="white_bg list_box" style="margin-bottom:30px;" *ngIf="rows">
+  <div class="g_tit mb20">
+    <h5>法人代表身份信息</h5>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">姓名</span>
+      <span class="value">{{rows.idMobileCer.name}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">性别</span>
+      <span class="value" *ngIf="(rows.idMobileCer.sex=='0')||(rows.idMobileCer.sex=='男')">男</span>
+      <span class="value" *ngIf="(rows.idMobileCer.sex=='1')||(rows.idMobileCer.sex=='女')">女</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">民族</span>
+      <span class="value">{{rows.idMobileCer.nation}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">出生时间</span>
+      <span class="value">{{rows.idMobileCer.birth}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">身份证号码</span>
+      <span class="value">{{rows.idMobileCer.idCode}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">有效期</span>
+      <span class="value">{{rows.idMobileCer.validityPeriod}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">发证机关</span>
+      <span class="value">{{rows.idMobileCer.issuingAgency}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline">
+      <span class="text">地址</span>
+      <span class="value">{{rows.idMobileCer.address}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <p style="font-size: 14px; padding-left: 20px;">身份证上传件</p>
+    <div class="inline picture col_6">
+      <span class="textPic">身份证正面</span>
+      <span class="value">
+        <img src="{{rows.idMobileCer.idUrl}}" alt="{{rows.idMobileCer.idUrl}}" class="cur_img" (click)="imgScale(rows.idMobileCer.idUrl)">
+      </span>
+      <span class="textPic ms" style="cursor:pointer">点击放大查看</span>
+    </div>
+    <div class="inline picture col_6">
+      <span class="textPic">身份证反面</span>
+      <span class="value">
+        <img src="{{rows.idMobileCer.idBackUrl}}" alt="{{rows.idMobileCer.idBackUrl}}" class="cur_img" (click)="imgScale(rows.idMobileCer.idBackUrl)">
+      </span>
+      <span class="textPic ms" style="cursor:pointer">点击放大查看</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">法人手机号码</span>
+      <span class="value">{{rows.idMobileCer.mobile}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">手机号码状态</span>
+      <span class="value" *ngIf="rows.idMobileCer.status=='0'">未认证</span>
+      <span class="value" *ngIf="rows.idMobileCer.status=='1'">认证通过</span>
+      <span class="value" *ngIf="rows.idMobileCer.status=='2'">认证失败</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">人证一致性验证</span>
+      <span class="value" *ngIf="rows.bodyCer.status=='0'">未认证</span>
+      <span class="value" *ngIf="rows.bodyCer.status=='1'">认证通过</span>
+      <span class="value" *ngIf="rows.bodyCer.status=='2'">认证失败</span>
+    </div>
+  </div>
+</div>
+<div class="white_bg list_box" style="margin-bottom:30px;" *ngIf="rows">
+  <div class="g_tit mb20">
+    <h5>大股东/实际控制人身份信息</h5>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">姓名</span>
+      <span class="value">{{rows.controllerCer.name}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">性别</span>
+      <span class="value" *ngIf="(rows.controllerCer.sex=='0')||(rows.controllerCer.sex=='男')">男</span>
+      <span class="value" *ngIf="(rows.controllerCer.sex=='1')||(rows.controllerCer.sex=='女')">女</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">民族</span>
+      <span class="value">{{rows.controllerCer.nation}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">出生时间</span>
+      <span class="value">{{rows.controllerCer.birth}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">身份证号码</span>
+      <span class="value">{{rows.controllerCer.idCode}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">有效期</span>
+      <span class="value">{{rows.controllerCer.validityPeriod}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">发证机关</span>
+      <span class="value">{{rows.controllerCer.issuingAgency}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline">
+      <span class="text">地址</span>
+      <span class="value">{{rows.controllerCer.address}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <p style="font-size: 14px; padding-left: 20px;">身份证上传件</p>
+    <div class="inline picture col_6">
+      <span class="textPic">身份证上传件</span>
+      <span class="value">
+        <img src="{{rows.controllerCer.idUrl}}" alt="{{rows.controllerCer.idUrl}}" class="cur_img" (click)="imgScale(rows.controllerCer.idUrl)">
+      </span>
+      <span class="textPic ms" style="cursor:pointer">点击放大查看</span>
+    </div>
+    <div class="inline picture col_6">
+      <span class="textPic">身份证反面</span>
+      <span class="value">
+        <img src="{{rows.controllerCer.idBackUrl}}" alt="{{rows.controllerCer.idBackUrl}}" class="cur_img" (click)="imgScale(rows.controllerCer.idBackUrl)">
+      </span>
+      <span class="textPic ms" style="cursor:pointer">点击放大查看</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">手机号码</span>
+      <span class="value">{{rows.controllerCer.mobile}}</span>
+    </div>
+  </div>
+</div>
+<div class="white_bg list_box" style="margin-bottom:30px;" *ngIf="rows">
+  <div class="g_tit mb20">
+    <h5>绑定信息</h5>
+  </div>
+  <!-- <div class="approveStatus">
+    <div *ngIf="rows.etpCer.status=='1'" class="approveSuc">企业实名认证成功</div>
+    <div *ngIf="rows.etpCer.status=='0'" class="approveFalse">
+      <div class="text">
+        <p>企业实名认证失败 </p>
+        <span>{{rows.etpCer.reason}}</span>
+      </div>
+    </div>
+  </div> -->
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">绑定时间</span>
+      <span class="value">{{rows.etpCer.authDate | date:'yyyy-MM-dd'}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">绑定状态</span>
+      <span class="value">{{rows.controllerCer.status==='1'?'正常':'已失效'}}</span>
+    </div>
+  </div>
+</div>
+<div class="mask" *ngIf="active">
+  <pic-scale class="picBox" [ImgUrl]="imgUrl" (closeImg)="close($event)"></pic-scale>
+</div>

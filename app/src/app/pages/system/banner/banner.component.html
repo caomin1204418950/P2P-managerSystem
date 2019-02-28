@@ -1,0 +1,185 @@
+<div class="container">
+  <div class="routes" style="width:300px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <div class="gutter-example">
+      <div nz-row nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>标题：</span>
+          <div class="gutter-box">
+            <input nz-input [(ngModel)]="data.find.title">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>状态：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有状态" [(ngModel)]="data.find.status">
+              <nz-option nzLabel="全部" nzValue=""></nz-option>
+              <nz-option nzLabel="禁止" nzValue="0"></nz-option>
+              <nz-option nzLabel="启动" nzValue="1"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>分组：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="全部分组" [(ngModel)]="data.find.code">
+              <nz-option nzLabel="全部分组" nzValue=""></nz-option>
+              <nz-option nzLabel="{{v.name}}" nzValue="{{v.code}}" *ngFor="let v of groupList"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>&nbsp;</span>
+          <div class="gutter-box">
+            <button nz-button nzType="primary" (click)="gettable(data.find.pageNum,data.find)">查询</button>
+            <button nz-button nzType="default" style="margin-left:8px;" (click)="reset()">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card style="margin-top:40px">
+    <div class="head">
+      <h4>查询结果</h4>
+      <div class="headright">
+        <button nz-button nzType="primary" (click)='formshow(false)'>添加banner</button>
+      </div>
+    </div>
+    <nz-table #rowSelectionTable [nzData]="data.table" nzShowPagination=false>
+      <thead>
+        <tr>
+          <th>排序</th>
+          <th>标题</th>
+          <th>图片</th>
+          <th>状态</th>
+          <th>分组</th>
+          <th>更新时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td>{{data.sort}}</td>
+          <td>{{data.title}}</td>
+          <td>
+            <img src="{{data.mediaUrl}}" (click)='imgshow(data.mediaUrl)' style="width:40px;height:40px" alt="">
+          </td>
+          <td>
+            <nz-switch [ngModel]="data.switchValue" (ngModelChange)="switchChange($event,data.id)"></nz-switch>
+          </td>
+          <td>
+            <span *ngIf="data.bannerGroup=='bannerGuest'">进件H5端首页</span>
+            <span *ngIf="data.bannerGroup=='bannerApp'">营销端APP首页</span>
+          </td>
+          <td>{{data.updateDate}}</td>
+          <td class="options">
+        <tr>
+          <th style="cursor:pointer;" (click)='formshow(data)'>修改</th>
+          <th style="cursor:pointer;" (click)='removeshow(data)'>删除</th>
+        </tr>
+        </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination" *ngIf="total!=0">
+      <nz-pagination [nzPageIndex]='data.find.pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+        nzShowQuickJumper></nz-pagination>
+    </div>
+  </nz-card>
+  <nz-modal [(nzVisible)]="showSingleSwitch" (nzOnCancel)="singleHandleCancel()" (nzOnOk)="singleHandleOk()">
+    <p>{{statusText}}</p>
+</nz-modal>
+
+  <div class="mask" [hidden]="!data.mengbanshow"></div>
+  <div class="modal" [hidden]="!data.formshow">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{data.addtext}}banner</h4>
+        <button type="button" class="close basic-close" (click)="hidden()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">标题：</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="text" placeholder='请输入标题' maxlength="50" [(ngModel)]='data.form.title'>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">图片地址：</label>
+          <div class="col-sm-9">
+            <input *ngIf='data.formshow' [hidden]='true' type="file" id="file" name='file' accept="image/*"
+              ng2FileSelect [uploader]="uploader" (change)='selectedFileOnChanged($event,data.form)'>
+            <input class="form-control" style='width:80%;float:left;' [disabled]='true' type="text" [(ngModel)]='data.form.mediaUrl'>
+            <button class="btn btn-primary ripple light" style='float:right' onclick="document.getElementById('file').click()">上传文件</button>
+            <div style='clear:both'></div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">详情信息：</label>
+          <div class="col-sm-9" style='padding-top:0.375rem'>
+            <app-tiny-editor [elementId]="'my-editor'" (onEditorContentChange)="keyupHandler($event)" [initialContent]="data.form.detail"></app-tiny-editor>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">状态：</label>
+          <div class="col-sm-9" style='padding-top:0.375rem'>
+            <label class='radio'>
+              <input type="radio" name='status' [value]='1' [(ngModel)]='data.form.status'>
+              <div class="after"></div>启用
+            </label>
+            <label class='radio'>
+              <input type="radio" name='status' [value]='0' [(ngModel)]='data.form.status'>
+              <div class="after"></div>禁用
+            </label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">分组:</label>
+          <div class="col-sm-9">
+              <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="全部分组" [(ngModel)]="data.form.code">
+                  <nz-option nzLabel="{{v.name}}" nzValue="{{v.code}}" *ngFor="let v of groupList"></nz-option>
+                </nz-select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">排序:</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="number" placeholder='请输入排序' [(ngModel)]='data.form.sort'></div>
+        </div>
+        <div class="form-group form-group-btn row">
+          <button type="button" class="btn btn-primary btn-outline-primary ripple light" (click)="hidden()">取消</button>
+          <button type="button" class="btn btn-primary ripple light" (click)="submit()" [disabled]="data.form.cansubmit">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='confirm' [hidden]="!data.removeshow">
+    <div class="header">
+      <span>系统提示</span>
+    </div>
+    <div class="body">
+      <span>您确定要删除此条banner吗？</span>
+    </div>
+    <div class="footer">
+      <button class='cal' type="button" (click)="hidden()">取消</button>
+      <button class='sure' type="button" (click)="remove()">确定删除</button>
+    </div>
+  </div>
+  <div class='confirm' [hidden]="!data.imgshow" style='width:1000px'>
+    <div class="header">
+      <span>查看图片</span>
+    </div>
+    <div class="body">
+      <img [src]="data.imgurl" alt="" style='width:100%;display:block'>
+    </div>
+    <div class="footer">
+      <!-- <button class='cal' type="button" (click)="hidden()">取消</button> -->
+      <button class='sure' type="button" (click)="hidden()">确定</button>
+    </div>
+  </div>
+</div>

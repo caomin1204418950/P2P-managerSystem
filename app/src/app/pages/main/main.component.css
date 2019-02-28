@@ -1,0 +1,9 @@
+
+
+::ng-deep .left{
+    background-color: #2c2e3e;
+}
+::ng-deep .menu{
+    background-color: #2c2e3e;
+    color: #fff;
+}

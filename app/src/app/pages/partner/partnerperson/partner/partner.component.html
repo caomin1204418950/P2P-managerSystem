@@ -1,0 +1,126 @@
+<div class="container">
+    <div class="routes" style="width:400px;height:50px;">
+        <app-crumb></app-crumb>
+      </div>
+    <nz-card>
+        <div class="gutter-example">
+          <div nz-row nzGutter="16">
+            <div nz-col class="gutter-row" nzSpan="4">
+              <span>手机号码：</span>
+              <div class="gutter-box">
+                <input nz-input placeholder="请输入电话号码" [(ngModel)]="findPhone">
+              </div>
+            </div>
+            <div nz-col class="gutter-row" nzSpan="4">
+              <span>注册来源：</span>
+              <div class="gutter-box">
+                <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有" [(ngModel)]="findRegisterSource">
+                  <nz-option nzLabel="所有" nzValue=""></nz-option>
+                  <nz-option nzLabel="app" nzValue="app"></nz-option>
+                  <nz-option nzLabel="小程序" nzValue="小程序"></nz-option>
+                  <nz-option nzLabel="手机网页" nzValue="手机网页"></nz-option>
+                </nz-select>
+              </div>
+            </div>
+            <div nz-col class="gutter-row" nzSpan="4">
+              <span>关系：</span>
+              <div class="gutter-box">
+                <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有" [(ngModel)]="findConnect">
+                  <nz-option nzLabel="所有" nzValue=""></nz-option>
+                  <nz-option nzLabel="直接伙伴" nzValue="0"></nz-option>
+                  <nz-option nzLabel="间接伙伴" nzValue="1"></nz-option>
+                </nz-select>
+              </div>
+            </div>
+            <div nz-col class="gutter-row" nzSpan="5">
+              <span>申请日期范围：</span>
+              <div class="gutter-box">
+                <nz-date-picker [nzDisabledDate]="disabledStartDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="startValue"
+                  nzPlaceHolder="开始日期" (ngModelChange)="onStartChange($event)" (nzOnOpenChange)="handleStartOpenChange($event)">
+                </nz-date-picker>
+                <span>~~</span>
+                <nz-date-picker [nzDisabledDate]="disabledEndDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="endValue"
+                  nzPlaceHolder="结束日期" [nzOpen]="endOpen" (ngModelChange)="onEndChange($event)" (nzOnOpenChange)="handleEndOpenChange($event)">
+                </nz-date-picker>
+              </div>
+            </div>
+    
+            <div nz-col class="gutter-row" nzSpan="4">
+              <span>&nbsp;</span>
+              <div class="gutter-box">
+                <button nz-button nzType="primary" (click)="search()">查询</button>
+                <button nz-button nzType="default" style="margin-left:8px;" (click)="reset()">重置</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nz-card>
+      <nz-card style="margin-top:40px">
+        <div class="head">
+          <div>
+            <span style="color:red">{{userTle}}</span>
+            的创客分销伙伴列表
+          </div>
+    
+          <div class="headright">
+            <span>普通创客：{{normalMaker}}人，</span>
+            <span>合伙人：{{countPartner}}人</span>
+          </div>
+        </div>
+          <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>手机号码</th>
+                <th>注册来源</th>
+                <th>关系</th>
+                <th>合伙人等级</th>
+                <th>邀请伙伴</th>
+                <th>客户数</th>
+                <th>订单数</th>
+                <th>放款金额</th>
+                <th>注册时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionTable.data">
+                <td>{{data.index}}</td>
+                <td>{{data.mobile}}</td>
+                <td>{{data.registerSource}}</td>
+                <td>
+                    <span *ngIf="data.releation== 0">直接伙伴</span>
+                    <span *ngIf="data.releation == 1">间接伙伴</span>
+                </td>
+                <td>{{data.level}}</td>
+                <td>
+                    <span *ngIf="data.parnerCounts">{{data.parnerCounts}}</span>
+                    <span *ngIf="!data.parnerCounts">0</span>
+                </td>
+                <td>
+                    <span *ngIf="data.userNum">{{data.userNum}}</span>
+                    <span *ngIf="!data.userNum">0</span>
+                </td>
+                <td>
+                    <span *ngIf="data.orderCount">{{data.orderCount}}</span>
+                    <span *ngIf="!data.orderCount">0</span>
+                </td>
+                <td>
+                    <span *ngIf="data.orderSum">{{data.orderSum}}</span>
+                    <span *ngIf="!data.orderSum">0</span>
+                </td>
+                <td>{{data.registerTime}}</td>
+                <td class="options">
+                  <tr>
+                    <th [routerLink]="['/app/maker/makerperson/detail']" [queryParams]="{userid:data.id}" style="cursor:pointer;">详情</th>
+                  </tr>
+              </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="pagination" *ngIf="total!=0">
+            <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+              nzShowQuickJumper></nz-pagination>
+          </div>
+        </nz-card>
+</div>

@@ -1,0 +1,134 @@
+<div class="container">
+  <div class="routes" style="width:400px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <div class="gutter-example">
+      <div nz-row nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>客户账号：</span>
+          <div class="gutter-box">
+            <input nz-input placeholder="请输入电话号码" [(ngModel)]="findPhone">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>公司名称：</span>
+          <div class="gutter-box">
+            <input nz-input [(ngModel)]="findEtpName">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>订单号：</span>
+          <div class="gutter-box">
+            <input nz-input [(ngModel)]="findNo">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>订单状态：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有状态" [(ngModel)]="findStatus">
+              <nz-option nzLabel="所有状态" nzValue=""></nz-option>
+              <nz-option nzLabel="处理中" nzValue="0"></nz-option>
+              <nz-option nzLabel="已终止" nzValue="1"></nz-option>
+              <nz-option nzLabel="处理完成" nzValue="2"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="5">
+          <span>提交日期范围：</span>
+          <div class="gutter-box">
+            <nz-date-picker [nzDisabledDate]="disabledStartDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="startValue"
+              nzPlaceHolder="开始日期" (ngModelChange)="onStartChange($event)" (nzOnOpenChange)="handleStartOpenChange($event)">
+            </nz-date-picker>
+            <span>~~</span>
+            <nz-date-picker [nzDisabledDate]="disabledEndDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="endValue"
+              nzPlaceHolder="结束日期" [nzOpen]="endOpen" (ngModelChange)="onEndChange($event)" (nzOnOpenChange)="handleEndOpenChange($event)">
+            </nz-date-picker>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>申请产品：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有产品" [(ngModel)]="findProductId">
+              <nz-option nzLabel="所有产品" nzValue=""></nz-option>
+              <nz-option nzLabel="{{item.name}}" nzValue="{{item.id}}" *ngFor="let item of productList"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>关系：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有" [(ngModel)]="findReleation">
+              <nz-option nzLabel="所有" nzValue=""></nz-option>
+              <nz-option nzLabel="直接客户" nzValue="0"></nz-option>
+              <nz-option nzLabel="一度客户" nzValue="1"></nz-option>
+              <nz-option nzLabel="二度客户" nzValue="2"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>&nbsp;</span>
+          <div class="gutter-box">
+            <button nz-button nzType="primary" (click)="search()">查询</button>
+            <button nz-button nzType="default" style="margin-left:8px;" (click)="reset()">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+  <nz-card style="margin-top:40px">
+    <div class="head">
+      <span style="color:red">{{phone}}</span>的分销订单列表
+    </div>
+    <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+      <thead>
+        <tr>
+          <th>订单号</th>
+          <th>企业名称</th>
+          <th>客户账号</th>
+          <th>直接拓展人</th>
+          <th>关系</th>
+          <th>申请产品</th>
+          <th>申请金额</th>
+          <th>贷款期限</th>
+          <th>还款方式</th>
+          <th>提交日期</th>
+          <th>订单状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td>{{data.no}}</td>
+          <td>{{data.etpName}}</td>
+          <td>{{data.mobile}}</td>
+          <td>{{data.insStaffName}}</td>
+          <td>
+            <span *ngIf="data.relation == 0">直属客户</span>
+            <span *ngIf="data.relation == 1">一度客户</span>
+            <span *ngIf="data.relation == 2">二度客户</span>
+          </td>
+          <td>{{data.productName}}</td>
+          <td>{{data.amount}}</td>
+          <td>{{data.term}}</td>
+          <td>{{data.repayMethod}}</td>
+          <td>{{data.createDate}}</td>
+          <td>
+            <span *ngIf="data.status == 0">进行中</span>
+            <span *ngIf="data.status == 1">终止</span>
+            <span *ngIf="data.status == 2">完成</span>
+          </td>
+          <td class="options">
+            <tr>
+              <th [routerLink]="['/app/business/orderinfo']" [queryParams]="{orderid:data.id}" style="cursor:pointer;">订单详情</th>
+            </tr>
+        </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination" *ngIf="total!=0">
+      <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+        nzShowQuickJumper></nz-pagination>
+    </div>
+  </nz-card>
+</div>

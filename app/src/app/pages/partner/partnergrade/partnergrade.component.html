@@ -1,0 +1,61 @@
+<app-crumb></app-crumb>
+<div class="applyContainer">
+    <div class="white_bg list_box" style='height:715px'>
+        <div class="g_tit mb20" style="height: 58px;">
+            <h4 style="float: left;">等级列表</h4>
+            <button nz-button nzType="primary" (click)="update()" style="margin: 10px 0 0 20px; float: right;">更新等级设置</button>
+            <button nz-button nzType="primary" (click)="add()" style="margin: 10px 0 0 20px; float: right;">新增等级</button>
+        </div>
+        <div>
+            <table class="table" border="1" cellspacing="0" cellpadding="0">
+                <thead>
+                    <th style="width: 30px;">序号</th>
+                    <th style="width: 20%;">等级名称</th>
+                    <th style="width: 10%;">返利奖金</th>
+                    <th style="width: 10%;">下一级序号</th>
+                    <th style="width: 20%;">贡献值要求</th>
+                    <th style="width: 10%;">默认等级</th>
+                    <th style="width: 20%;">操作</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of rows;let index=index">
+                        <td>
+                            {{index+1}}
+                        </td>
+                        <td>
+                            <input *ngIf="item.id == checkId" type="text" name="" [(ngModel)]="item.levelName">
+                            <span *ngIf="item.id != checkId">{{item.levelName}}</span>
+                        </td>
+                        <td>
+                            <input *ngIf="item.id == checkId" type="text" name="" [(ngModel)]="item.rebate">
+                            <span *ngIf="item.id != checkId">{{item.rebate}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.nextLevelId}}</span>
+                        </td>
+                        <td>
+                            <input *ngIf="item.id == checkId" type="text" name="" [(ngModel)]="item.updateCondition">
+                            <span *ngIf="item.id != checkId">{{item.updateCondition}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.isDefault=='1'">是</span>
+                            <span *ngIf="item.isDefault!='1'">否</span>
+                        </td>
+                        <td>
+                            <div *ngIf="item.id != checkId && item.levelName!='第一等级合伙人'">
+                                <a class="a-btn" (click)="edit(item.id)">编辑</a>
+                                <a class="a-btn mar-l-10" style="color: red" (click)="delete(index)">删除</a>
+                            </div>
+                            <div *ngIf="item.id != checkId&&item.levelName=='第一等级合伙人'" >
+                                    <a class="a-btn" (click)="edit(item.id)">编辑</a>
+                            </div>
+                            <div *ngIf="item.id == checkId">
+                                <a class="a-btn" (click)="save()">保存</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>

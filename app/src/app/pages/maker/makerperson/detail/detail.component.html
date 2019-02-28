@@ -1,0 +1,113 @@
+<div class="container" style="width:100%;">
+    <div class="routes" style="width:300px;height:50px;">
+        <app-crumb></app-crumb>
+    </div>
+    <table border="1" style="width:100%;">
+        <tr style="width:100%;height:40px;text-align: center;">
+            <td>手机号码</td>
+            <td>{{telNum}}</td>
+            <td>用户头像</td>
+            <td>
+                <img src="{{avatar}}" alt="" style="width:40px;height:40px;">
+            </td>
+        </tr>
+        <tr style="width:100%;height:40px;text-align: center;">
+            <td>邀请人</td>
+            <td>{{inviter}}</td>
+            <td>注册来源</td>
+            <td>{{registrationSource}}</td>
+        </tr>
+        <tr style="width:100%;height:40px;text-align: center;">
+            <td>状态</td>
+            <td>{{statusText}}</td>
+            <td>分组</td>
+            <td>{{group}}</td>
+        </tr>
+    </table>
+    <div class="btnContainer" style="width:100%;height:70px;">
+        <button nz-button nzType="primary" [ngClass]="{'default':!selectedBasic}" (click)="showBasic()">基本信息</button>
+        <button nz-button nzType="primary" [ngClass]="{'default':!selectedCheck}" (click)="showCheck()">认证信息</button>
+        <button nz-button nzType="primary" [ngClass]="{'default':!selectedLogin}" (click)="showLogin()">登录信息</button>
+    </div>
+    <table border="1" style="width:100%;" *ngIf="showBasicInm">
+        <tr style="width:100%;height:40px;text-align: center;">
+            <td>最高学历</td>
+            <td>{{education}}</td>
+            <td>工作年限</td>
+            <td>{{workTime}}</td>
+        </tr>
+        <tr style="width:100%;height:40px;text-align: center;">
+            <td>当前所在行业</td>
+            <td>{{job}}</td>
+            <td>现居城市</td>
+            <td>{{city}}</td>
+        </tr>
+        <tr style="width:100%;height:40px;text-align: center;">
+            <td>所在岗位</td>
+            <td>{{position}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <div *ngIf="showCheckInm">
+        <span style="font-size:18px;font-weight: bold;">实名认证 <i class="anticon anticon-check-circle"></i></span>
+        <div class="idCard">
+            <img src="{{frontUrl}}" alt="" class="idcard_item">
+            <img src="{{oppositeUrl}}" alt="" class="idcard_item">
+        </div>
+        <table border="1" style="width:100%;">
+            <tr style="width:100%;height:40px;text-align: center;">
+                <td>姓名</td>
+                <td>{{realName}}</td>
+                <td>性别</td>
+                <td>{{sex}}</td>
+            </tr>
+            <tr style="width:100%;height:40px;text-align: center;">
+                <td>民族</td>
+                <td>{{nation}}</td>
+                <td>出生年月</td>
+                <td>{{birthday}}</td>
+            </tr>
+            <tr style="width:100%;height:40px;text-align: center;">
+                <td>身份证号码</td>
+                <td>{{idNum}}</td>
+                <td>住址</td>
+                <td>{{address}}</td>
+            </tr>
+            <tr style="width:100%;height:40px;text-align: center;">
+                <td>发证机关</td>
+                <td>{{cerOrg}}</td>
+                <td>有效期</td>
+                <td>{{expireDate}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div *ngIf="showidentificationInfo" style="width:100%;text-align:center;">
+        用户未进行信息认证
+    </div>
+    <nz-card *ngIf="showLoginInm">
+        <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>登录时间</th>
+                    <th>登录地点</th>
+                    <th>登录终端</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of rowSelectionTable.data">
+                    <td>{{data.index}}</td>
+                    <td>{{data.lastLoginTime}}</td>
+                    <td>{{data.lastLoginArea}}</td>
+                    <td>{{data.lastLoginTerminal}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <div class="pagination" *ngIf="total!=0">
+            <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+                nzShowQuickJumper></nz-pagination>
+        </div>
+    </nz-card>
+</div>

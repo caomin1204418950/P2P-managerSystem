@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="routes" style="width:300px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <div class="gutter-example">
+      <div nz-row nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>文章标题：</span>
+          <div class="gutter-box">
+            <input nz-input placeholder="请输入文章标题" [(ngModel)]="findTittle">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="5">
+          <span>注册时间：</span>
+          <div class="gutter-box">
+            <nz-date-picker [nzDisabledDate]="disabledStartDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="startValue"
+              nzPlaceHolder="开始日期" (ngModelChange)="onStartChange($event)" (nzOnOpenChange)="handleStartOpenChange($event)">
+            </nz-date-picker>
+            <span>~~</span>
+            <nz-date-picker [nzDisabledDate]="disabledEndDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="endValue"
+              nzPlaceHolder="结束日期" [nzOpen]="endOpen" (ngModelChange)="onEndChange($event)" (nzOnOpenChange)="handleEndOpenChange($event)">
+            </nz-date-picker>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>&nbsp;</span>
+          <div class="gutter-box">
+            <button nz-button nzType="primary" (click)="search()">查询</button>
+            <button nz-button nzType="default" style="margin-left:8px;" (click)="reset()">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+  <nz-card style="margin-top:40px">
+    <div class="head">
+      <h4>申请列表</h4>
+      <div class="headright">
+        <button class="nz-button" nz-button nzType="primary" (click)="clickedWillPublish()">批量加入待发布列表</button>
+      </div>
+    </div>
+    <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+      <thead>
+        <tr>
+          <th nzShowCheckbox></th>
+          <th>文章标题</th>
+          <th>注册时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzShowCheckbox (nzCheckedChange)="checked($event,data.id)"></td>
+          <td (click)="clickedshowContent(data.pageContent)" style="cursor:pointer;">{{data.title}}</td>
+          <td>{{data.pageDate}}</td>
+
+          <td class="options">
+            <tr>
+              <th *ngIf="data.status !=null" style="color: #666674; background: none; padding: 0; margin: auto 10px;">
+                 --
+              </th>
+              <th *ngIf="data.status ==null&&data.title!='正在加载...'" (click)="clickedSinglePublish(data.id)" style="cursor:pointer;">加入待发布列表</th>
+            </tr>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination" *ngIf="total!='0'">
+      <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+        nzShowQuickJumper></nz-pagination>
+    </div>
+  </nz-card>
+  <nz-modal [(nzVisible)]="singleCheckModal" (nzOnCancel)="singleCheckModalCancel()" (nzOnOk)="singleCheckModalOk()">
+    <p>你确定要将这篇文章加入待发布列表吗？</p>
+</nz-modal>
+  <nz-modal [(nzVisible)]="manyCheckModal" (nzOnCancel)="manyCheckModalCancel()" (nzOnOk)="manyCheckModalOk()">
+    <p>你确定要将当前页面选中的{{selectedLenth}}篇文章加入待发布列表吗？</p>
+</nz-modal>
+  <nz-modal [(nzVisible)]="publishCheckModal" (nzOnCancel)="publishCheckModalCancel()" (nzOnOk)="publishCheckModalOk()">
+    <p>加入待发布列表成功，是否立即发布？</p>
+</nz-modal>
+
+  <nz-modal [nzWidth]="1000" [(nzVisible)]="showContent"  (nzOnCancel)="showContentCancel()" (nzOnOk)="showContentOk()">
+      <div [innerHTML]="content"></div>
+</nz-modal>
+</div>

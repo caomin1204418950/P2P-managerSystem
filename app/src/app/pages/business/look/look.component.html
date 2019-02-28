@@ -1,0 +1,124 @@
+<app-crumb [url]='data.url'></app-crumb>
+<div class='title'>产品信息</div>
+<div class="white_bg list_box infor">
+  <div class="mb20 top">
+    <div class="g_input">
+      <div class="label">
+        绑定产品：{{data.product.name}}
+      </div>
+    </div>
+    <div class="right" style='color:#589af8' [routerLink]='["/app/business/productinfor",data.id]'>查看产品详细信息</div>
+  </div>
+  <ul class='data'>
+    <li>产品编号：{{data.product.number}}</li>
+    <li>贷款期限：{{data.product.minTerm}}-{{data.product.maxTerm}}月</li>
+    <li>贷款金额：{{data.product.minAmount}}-{{data.product.maxAmount}}万</li>
+    <li>贷款利息（年化）：{{data.product.minRate}}%-{{data.product.maxRate}}%</li>
+  </ul>
+</div>
+<div class='title'>表单配置</div>
+<div class="white_bg list_box form">
+  <div *ngFor='let list of data.group;let index=index'>
+    <div class='tabletitle'>
+      <div class="left">
+        分组名称：{{list.groupName}}
+        <span *ngIf='list.groupShow' style='color:red;margin-left:10px;'>(分页显示此分组)</span>
+      </div>
+    </div>
+    <table class='table'>
+      <tr class='tablehead'>
+        <td>排序</td>
+        <td>字段名称</td>
+        <td>业务主键</td>
+        <td>字段类型</td>
+        <td>数据源</td>
+        <td>提示信息</td>
+        <td>是否必填</td>
+      </tr>
+      <tr class='tablebody' *ngFor='let row of list.formControlList;let index=index'>
+        <td>
+          {{index+1}}
+        </td>
+        <td>
+          {{row.controlName}}
+        </td>
+        <td>
+          {{row.controlKey}}
+        </td>
+        <td>
+          {{row.typeName}}
+        </td>
+        <td>
+          {{row.dataSourceName}}
+        </td>
+        <td>
+          {{row.placeInfo}}
+        </td>
+        <td>
+          {{row.require?'必填':'非必填'}}
+        </td>
+      </tr>
+    </table>
+    <!-- <ngx-datatable class="data-table dt-chk material" [rows]="list.table" [columnMode]="'force'" [scrollbarH]="true"
+      [headerHeight]="44" [rowHeight]="'auto'" [limit]="10">
+      <ngx-datatable-column [sortable]="false" name="是否必填" prop="required">
+        <ng-template ngx-datatable-cell-template let-row="row">
+          <input type="checkbox" [(ngModel)]='row.required'>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="操作">
+        <ng-template ngx-datatable-cell-template let-row="row" let-rowIndex="rowIndex">
+          <div class="flex">
+            <button [disabled]='rowIndex==0' (click)='moveup(rowIndex,list.table)'>上移</button>
+            <button [disabled]='rowIndex==list.table.length-1' (click)='movedown(rowIndex,list.table)'>下移</button>
+            <button [disabled]='list.table.length<=1' (click)='remove(rowIndex,list.table)'>删除</button>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable> -->
+  </div>
+</div>
+<div class='title'>申请条件</div>
+<div class="white_bg list_box infor">
+  <ul class='data'>
+    <li *ngFor='let list of data.applyCondition;let index=index'>
+        <span *ngIf='list.checked==1' style='color:green'>√</span>
+        <span *ngIf='list.checked==0' style='color:red'>×</span>
+        {{list.name}}
+    </li>
+  </ul>
+</div>
+<div class='title' *ngIf='data.state=="look"'>发布状态</div>
+<div class="white_bg list_box infor" *ngIf='data.state=="look"'>
+  <div class='mb20' *ngIf='data.product.status==0'>待审核</div>
+  <div class='mb20' *ngIf='data.product.status==1'>审核不通过</div>
+  <div class='mb20' *ngIf='data.product.status==2'>已发布</div>
+  <div class='mb20' *ngIf='data.product.status==3'>已下架</div>
+  <div class='mb20' *ngIf='data.product.comments'>
+      审核意见：{{data.product.comments}}
+  </div>
+</div>
+<div class='title' *ngIf='data.state=="examine"'>发布审核</div>
+<div class="white_bg list_box infor clearfix" *ngIf='data.state=="examine"'>
+    <div>
+      <div class="mb20">
+        审核结果：
+        <label>
+          <input type="radio" value='2' [(ngModel)]='data.examine.status'>审核通过
+        </label>
+        <label>
+          <input type="radio" value='1' [(ngModel)]='data.examine.status'>审核不通过
+        </label>
+      </div>
+    </div>
+    <div>
+      <div class="mb20">
+        审核建议：
+        <textarea nz-input type="text"  style="width:1000px;height:100px;" [(ngModel)]='data.examine.comments'></textarea>
+      </div>
+    </div>
+</div>
+<div class='buttom'>
+  <button nz-button nzType="primary" (click)='back()'>返回列表</button>
+  <button class='save' *ngIf='data.state=="examine"' (click)='submit()'>保存审批结果</button>
+</div>

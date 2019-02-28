@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="routes" style="width:300px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <div class="gutter-example">
+      <div nz-row nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="5">
+          <span>发生时间：</span>
+          <div class="gutter-box">
+            <nz-date-picker [nzDisabledDate]="disabledStartDate" nzShowTime nzFormat="yyyy-MM-dd "
+              [(ngModel)]="startValue" nzPlaceHolder="开始日期" (ngModelChange)="onStartChange($event)"
+              (nzOnOpenChange)="handleStartOpenChange($event)">
+            </nz-date-picker>
+            <span>~~</span>
+            <nz-date-picker [nzDisabledDate]="disabledEndDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="endValue"
+              nzPlaceHolder="结束日期" [nzOpen]="endOpen" (ngModelChange)="onEndChange($event)"
+              (nzOnOpenChange)="handleEndOpenChange($event)">
+            </nz-date-picker>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>用途：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有" [(ngModel)]="findUse">
+              <nz-option nzLabel="所有" nzValue=""></nz-option>
+              <nz-option nzLabel="佣金转存" nzValue="1"></nz-option>
+              <nz-option nzLabel="奖金转存" nzValue="2"></nz-option>
+              <nz-option nzLabel="充值" nzValue="3"></nz-option>
+              <nz-option nzLabel="购买金币" nzValue="5"></nz-option>
+              <nz-option nzLabel="余额提现" nzValue="4"></nz-option>
+              <nz-option nzLabel="购买会员" nzValue="6"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>资金流向：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有" [(ngModel)]="findFlow">
+              <nz-option nzLabel="所有" nzValue=""></nz-option>
+              <nz-option nzLabel="收入" nzValue="1"></nz-option>
+              <nz-option nzLabel="支出" nzValue="0"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+
+
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>&nbsp;</span>
+          <div class="gutter-box">
+            <button nz-button nzType="primary" (click)="search()">查询</button>
+            <button nz-button nzType="default" style="margin-left:8px;" (click)="reset()">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+  <nz-card style="margin-top:40px">
+    <div class="head">
+      <span style="color:red;">{{mobile}}</span>的余额变动明细列表
+    </div>
+    <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+      <thead>
+        <tr>
+          <th>发生时间</th>
+          <th>用途</th>
+          <th>发生金额</th>
+          <th>余额</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td>{{data.createDate}}</td>
+          <td>
+            <span *ngIf="data.type==1">佣金转存</span>
+            <span *ngIf="data.type==2">奖金转存</span>
+            <span *ngIf="data.type==3">充值</span>
+            <span *ngIf="data.type==4">余额提现</span>
+            <span *ngIf="data.type==5">购买金币</span>
+            <span *ngIf="data.type==6">购买会员</span>
+          </td>
+          <td>
+            <span *ngIf="data.incurredAmount>0">+{{data.incurredAmount}}</span>
+            <span *ngIf="data.incurredAmount<0">{{data.incurredAmount}}</span>
+            <span *ngIf="data.incurredAmount==0">0</span>
+          </td>
+          <td>
+              {{data.amount}}
+          </td>
+          <td>{{data.remark}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination" *ngIf="total!='0'">
+      <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+        nzShowQuickJumper></nz-pagination>
+    </div>
+  </nz-card>
+  <!-- <nz-modal [(nzVisible)]="AdjugeLevelModal" (nzOnCancel)="AdjugeLevelMoadleCancel()" (nzOnOk)="AdjugeLevelMoadleOk()">
+      <p>你确定要改变选中的人员等级吗？</p>
+  </nz-modal> -->
+</div>

@@ -1,0 +1,137 @@
+.title {
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    button{
+        float: right;
+        margin-top:10px;
+        background: #589AF8;
+        color: #fff;
+        width: 100px;
+        height: 30px;
+        border-radius: 5px;
+        text-align: center;
+        line-height: 30px;
+    }
+}
+
+.infor {
+    padding: 20px;
+    .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .g_input {
+            padding: 0;
+            .label {
+                padding: 0;
+                height: auto;
+            }
+        }
+        .right {
+            cursor: pointer;
+            color:#589af8;
+        }
+    }
+    .data {
+        display: flex;
+        >li {
+            flex: 1;
+            line-height: 30px;
+            label {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}
+.nz-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center
+}
+.form {
+    .tabletitle {
+        padding: 20px 0;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .left {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            label {
+                display: flex;
+                align-items: center;
+            }
+        }
+        .right {
+            display: flex;
+            align-items: center;
+            button {
+                width: 70px;
+                height: 30px;
+                border-radius: 5px;
+                color: #fff;
+                background: #589AF8;
+                margin:0 10px;
+            }
+            .red {
+                background: #FF0000;
+            }
+            button[disabled] {
+                background: #949494;
+            }
+        }
+    }
+    input{
+        border: 1px solid #D1D1D1;
+        padding:5px;
+    }
+    select{
+        border: 1px solid #D1D1D1;
+    }
+    .table {
+        width: 100%;
+        border-bottom: 1px solid #e2e2e2;
+        border-right: 1px solid #e2e2e2;
+        .tablehead{
+            line-height:44px;
+            background:#EEF5FE;
+        }
+        .tablebody{
+            line-height:54px;
+        }
+        tr {
+            text-align:center;
+            td {
+                border-top: 1px solid #e2e2e2;
+                border-left: 1px solid #e2e2e2;
+            }
+        }
+    }
+}
+.buttom{
+    display:flex;
+    justify-content:center;
+    margin-bottom: 100px;
+    button{
+        width:140px;
+        height:40px;
+        border-radius:5px;
+        border:1px solid #ccc;
+        text-align:center;
+        line-height:40px;
+        background-color: #ccc;
+        margin:30px;
+        color:#fff;
+    }
+    .save{
+        background:#589AF8;
+        border:1px solid #589AF8;
+        color:#fff;
+    }
+}

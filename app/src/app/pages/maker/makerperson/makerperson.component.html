@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="routes" style="width:300px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <div class="gutter-example">
+      <div nz-row nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>手机号码：</span>
+          <div class="gutter-box">
+            <input nz-input placeholder="请输入电话号码" [(ngModel)]="findPhone">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="5">
+          <span>注册日期范围：</span>
+          <div class="gutter-box">
+            <nz-date-picker [nzDisabledDate]="disabledStartDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="startValue"
+              nzPlaceHolder="开始日期" (ngModelChange)="onStartChange($event)" (nzOnOpenChange)="handleStartOpenChange($event)">
+            </nz-date-picker>
+            <span>~~</span>
+            <nz-date-picker [nzDisabledDate]="disabledEndDate" nzShowTime nzFormat="yyyy-MM-dd " [(ngModel)]="endValue"
+              nzPlaceHolder="结束日期" [nzOpen]="endOpen" (ngModelChange)="onEndChange($event)" (nzOnOpenChange)="handleEndOpenChange($event)">
+            </nz-date-picker>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>注册来源：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有来源" [(ngModel)]="findRegisterSource">
+              <nz-option nzLabel="所有" nzValue=""></nz-option>
+              <nz-option nzLabel="APP" nzValue="APP"></nz-option>
+              <nz-option nzLabel="H5" nzValue="H5"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>邀请人手机号码：</span>
+          <div class="gutter-box">
+            <input nz-input placeholder="请输入电话号码" [(ngModel)]="findInviterPhone">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>账号状态：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有状态" [(ngModel)]="findStatus">
+              <nz-option nzLabel="所有状态" nzValue=""></nz-option>
+              <nz-option nzLabel="禁止" nzValue="0"></nz-option>
+              <nz-option nzLabel="启用" nzValue="1"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>分组：</span>
+          <div class="gutter-box">
+            <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="默认分组" [(ngModel)]="findGroupName">
+              <nz-option nzLabel="所有分组" nzValue=""></nz-option>
+              <nz-option nzLabel="{{v.groupName}}" nzValue="{{v.groupName}}" *ngFor="let v of options"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>&nbsp;</span>
+          <div class="gutter-box">
+            <button nz-button nzType="primary" (click)="search()">查询</button>
+            <button nz-button nzType="default" style="margin-left:8px;" (click)="reset()">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card style="margin-top:40px">
+    <div class="head">
+      <h4>人员列表</h4>
+      <div class="headright">
+        <div class="c">
+          <button nz-button nzType="primary" (click)="clickedAdjugeGroup()">调整人员分组</button>
+          <div class="a" [hidden]="showGroupCount">
+            <div>
+              <option *ngIf="options.length == 0" class="group_option" value="">暂无分组</option>
+              <option class="group_option" (click)="chooseGroup($event,v.groupName)" value="{{v.groupId}}" *ngFor="let v of options">{{v.groupName}}</option>
+            </div>
+          </div>
+        </div>
+        <button class="nz-button" nz-button nzType="primary" (click)="clickedDisAble()">禁用</button>
+        <button class="nz-button" nz-button nzType="primary" (click)="clickedAble()">启用</button>
+      </div>
+    </div>
+    <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+      <thead>
+        <tr>
+          <th nzShowCheckbox></th>
+          <th>手机号码</th>
+          <th>头像</th>
+          <th>邀请人</th>
+          <th>注册来源</th>
+          <th>分组</th>
+          <th>账号状态</th>
+          <th>注册时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzShowCheckbox (nzCheckedChange)="checked($event,data.id)"></td>
+          <td>{{data.phone}}</td>
+          <td>
+            <img src="{{data.headUrl}}" style="width:40px;height:40px" alt="">
+          </td>
+          <td>{{data.inviterPhone}}</td>
+          <td>{{data.registerSource}}</td>
+          <td>{{data.groupName}}</td>
+          <td>
+            <nz-switch [ngModel]="data.switchValue" (ngModelChange)="switchChange($event,data.id)"></nz-switch>
+          </td>
+          <td>{{data.registerTime}}</td>
+          <td class="options">
+        <tr>
+          <th [routerLink]="['detail']" [queryParams]="{userid:data.id}" style="cursor:pointer;">详情</th>
+          <th [routerLink]="['partner']" [queryParams]="{userid:data.id,userTle:data.phone}" style="cursor:pointer;">创客伙伴</th>
+          <th [routerLink]="['/app/customer']" [queryParams]="{userid:data.id,userTle:data.phone}" style="cursor:pointer;">直属客户</th>
+          <th [routerLink]="['/app/business/order']" [queryParams]="{userid:data.id,findPhone:data.phone}" style="cursor:pointer;">客户订单</th>
+          <th [routerLink]="['/app/financial/money']" [queryParams]="{userTle:data.phone}" style="cursor:pointer;">资金明细</th>
+        </tr>
+        </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination" *ngIf="total!=0">
+      <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+        nzShowQuickJumper></nz-pagination>
+    </div>
+  </nz-card>
+
+  <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <p>{{statusText}}</p>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="showManyDisableMoadl" (nzOnCancel)="DisableMoadleCancel()" (nzOnOk)="DisableMoadleOk()">
+    <p>你确定要禁用选中的人员吗,禁用后用户将无法登陆APP或平台？</p>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="showManyAbleMoadl" (nzOnCancel)="AbleMoadleCancel()" (nzOnOk)="AbleMoadleOk()">
+    <p>你确定要启用选中的人员吗？</p>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="showAdjugeGroup" (nzOnCancel)="AdjugeMoadleCancel()" (nzOnOk)="AdjugeMoadleOk()">
+    <p style="margin-top:30px;">
+        你确定要启用选中的人员移至“{{choosedGroup}}”分组吗？移动后人员的实际返佣将会发生变化
+    </p>
+  </nz-modal>
+</div>

@@ -1,0 +1,38 @@
+.imgScale {
+    max-width: 800px;
+    max-height: 600px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    background: #fff;
+    padding: 50px;
+}
+.imgScale .ms {
+    width: 100%;
+    left: 0;
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 24px;
+}
+.active_img {
+    width: auto;
+    height: auto;
+    max-width: 700px;
+    max-height: 500px;
+}
+.close {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 100%;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    z-index: 10;
+}

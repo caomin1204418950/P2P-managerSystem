@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="routes" style="width:300px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <div class="head">
+      <span style="color:red;">{{mobile}}</span>的银行卡列表
+    </div>
+    <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+      <thead>
+        <tr>
+          <th>所属银行</th>
+          <th>类型</th>
+          <th>卡号</th>
+          <th>绑定时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td>{{data.bank}}</td>
+          <td>
+            <span >{{data.type}}</span>
+          </td>
+          <td>{{data.card}}</td>
+          <td>{{data.createDate}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination" *ngIf="total!='0'">
+      <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+        nzShowQuickJumper></nz-pagination>
+    </div>
+  </nz-card>
+</div>

@@ -1,0 +1,155 @@
+<div class="container">
+  <div class="routes" style="width:300px;height:50px;">
+    <app-crumb></app-crumb>
+  </div>
+  <nz-card>
+    <div class="gutter-example">
+      <div nz-row nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>手机号码：</span>
+          <div class="gutter-box">
+            <input placeholder="请输入电话号码" nz-input [(ngModel)]="findPhone">
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="4">
+          <span>&nbsp;</span>
+          <div class="gutter-box">
+            <button nz-button nzType="primary" (click)="search()">查询</button>
+            <button nz-button nzType="default" style="margin-left:8px;" (click)="reset()">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+  <nz-card style="margin-top:40px">
+    <div class="head">
+      <h4>人员列表</h4>
+    </div>
+    <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
+      <thead>
+        <tr>
+          <th nzShowCheckbox></th>
+          <th>手机号码</th>
+          <th>可用余额</th>
+          <th>冻结余额</th>
+          <th>待结佣金</th>
+          <th>冻结拥金</th>
+          <th>待结奖金</th>
+          <th>冻结奖金</th>
+          <th>金币</th>
+          <th>银行卡</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzShowCheckbox (nzCheckedChange)="checked($event,data.id)"></td>
+          <td>{{data.mobile}}</td>
+          <td>
+            <span *ngIf='data.availableVacancy==null'>0</span>
+            <span *ngIf='data.availableVacancy!=null'>{{data.availableVacancy}}</span>
+          </td>
+          <td>
+              <span *ngIf='data.blockFund==null'>0</span>
+              <span *ngIf='data.blockFund!=null'>{{data.blockFund}}</span>
+          </td>
+          <td>
+              <span *ngIf='data.waitCommision==null'>0</span>
+              <span *ngIf='data.waitCommision!=null'>{{data.waitCommision}}</span>
+          </td>
+          <td>
+              <span *ngIf='data.commisionBlock==null'>0</span>
+              <span *ngIf='data.commisionBlock!=null'>{{data.commisionBlock}}</span>
+          </td>
+          <td>
+              <span *ngIf='data.waitBonus==null'>0</span>
+              <span *ngIf='data.waitBonus!=null'>{{data.waitBonus}}</span>
+          </td>
+          <td>
+              <span *ngIf='data.rewardBlock==null'>0</span>
+              <span *ngIf='data.rewardBlock!=null'>{{data.rewardBlock}}</span>
+          </td>
+          <td>
+              <span *ngIf='data.num==null'>0</span>
+              <span *ngIf='data.num!=null'>{{data.num}}</span>
+          </td>
+          <td>
+              <span *ngIf='data.brankCardCount==null'>0</span>
+              <span *ngIf='data.brankCardCount!=null'>{{data.brankCardCount}}</span>
+          </td>
+          <td class="options">
+        <tr>
+          <th (click)="clickedReconciliation(data.mobile,data.availableVacancy)" style="cursor:pointer;">调账</th>
+          <th [routerLink]="['capitalsubsidiary']" [queryParams]="{mobile:data.mobile}" style="cursor:pointer;">余额明细</th>
+          <th [routerLink]="['commissionsubsidiary']" [queryParams]="{mobile:data.mobile}" style="cursor:pointer;">佣金明细</th>
+          <th [routerLink]="['bonussubsidiary']" [queryParams]="{mobile:data.mobile}" style="cursor:pointer;">奖金明细</th>
+          <th [routerLink]="['goldsubsidiary']" [queryParams]="{mobile:data.mobile}" style="cursor:pointer;">金币明细</th>
+          <th [routerLink]="['bankcard']" [queryParams]="{mobile:data.mobile}" style="cursor:pointer;">银行卡</th>
+        </tr>
+        </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination" *ngIf="total!=0">
+      <nz-pagination [nzPageIndex]='pageNum' [nzTotal]="total" (nzPageIndexChange)="pageSearch($event)"
+        nzShowQuickJumper></nz-pagination>
+    </div>
+  </nz-card>
+  <nz-modal nzTitle="手工调账" [(nzVisible)]="showReconciliation" (nzOnCancel)="reconciliationCancel()" (nzOnOk)="reconciliationOk()">
+    <div class="row">
+        <span style="width:100px;font-size: 16px">请选择账户</span>
+        <nz-select style="width: 220px;" nzShowSearch nzAllowClear nzPlaceHolder="余额账户" (ngModelChange)="getCount($event)" [(ngModel)]="selectAccount">
+            <nz-option nzLabel="余额账户" nzValue="1" ></nz-option>
+            <nz-option nzLabel="佣金账户" nzValue="2" ></nz-option>
+            <nz-option nzLabel="奖金账户" nzValue="3" ></nz-option>
+        </nz-select>
+        <div style="font-size: 9px;color:red;margin-left:10px;display: flex;flex-direction: column;justify-content: center">
+          <span *ngIf="selectAccount=='1'&&availableMoney!=null">
+              可用余额：{{availableMoney}}
+          </span>
+          <span *ngIf="selectAccount=='1'&&availableMoney==null">
+              可用余额：账户不存在
+          </span>
+          <span *ngIf="selectAccount=='2'&&availableCommissions!=null">
+              可用佣金：{{availableCommissions}}
+          </span>
+          <span *ngIf="selectAccount=='2'&&availableCommissions==null">
+              可用佣金：账户不存在
+          </span>
+          <span *ngIf="selectAccount=='3'&&availableBonuses!=null">
+              可用奖金：{{availableBonuses}}
+          </span>
+          <span *ngIf="selectAccount=='3'&&availableBonuses==null">
+              可用奖金：账户不存在
+          </span>
+        </div>
+    </div>
+    <div class="row">
+        <span style="width:100px;font-size: 16px">调整方向</span>
+        <nz-radio-group [(ngModel)]="radiovalue">
+            <label nz-radio nzValue="1">调增</label>
+            <label nz-radio nzValue="0">调减</label>
+        </nz-radio-group>
+    </div>
+    <div class="row">
+        <span style="width:100px;font-size: 16px">调整金额</span>
+        <input type="text" nz-input [(ngModel)]="adjugeAccount">
+    </div>
+    <div class="row" style="margin-top:45px">
+        <span style="width:100px;font-size: 16px">调整事由</span>
+        <textarea type="text" nz-input maxlength="250" style="height:95px" [(ngModel)]="adjugeReason"></textarea>
+    </div>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="showCheckMoadl"  (nzOnCancel)="clickedcheckCancel()" (nzOnOk)="clickedcheckOk()">
+    <span>您正在调整{{mobile}}的{{selectText}}金额，请谨慎核对后操作：</span>
+    <div style="color:red">
+      调整前账户金额:{{beforeAccount}}
+    </div>
+    <div style="color:red">
+      调整后账户金额:{{afterAccount}}
+    </div>
+    <div style="color:red">
+      调整金额:{{adjugecheckAccount}}
+    </div>
+  </nz-modal>
+</div>

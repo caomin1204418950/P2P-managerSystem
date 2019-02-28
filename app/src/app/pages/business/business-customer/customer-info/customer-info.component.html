@@ -1,0 +1,60 @@
+<app-crumb></app-crumb>
+<div class="white_bg list_box" style="margin-bottom:30px;">
+  <div style="padding-top: 20px;"></div>
+  <div class="inline_row clearfix" *ngIf="row">
+    <div class="inline col_6" *ngIf="row.mobile">
+      <span class="text">手机账户：</span>
+      <span class="value">{{row.mobile}}</span>
+    </div>
+    <div class="inline col_6 picture" *ngIf="row.headPort">
+      <span class="text">客户头像：</span>
+      <span class="value"><img src="{{row.headPort}}" alt=""></span>
+    </div>
+    <div class="inline col_6" *ngIf="row.clientSource">
+      <span class="text">客户来源：</span>
+      <span class="value" *ngIf="row.clientSource == 1">机构拓展</span>
+      <span class="value" *ngIf="row.clientSource == 2">创客拓展</span>
+      <span class="value" *ngIf="row.clientSource == 3">自主注册</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.insName">
+      <span class="text">拓展机构：</span>
+      <span class="value">{{row.insName}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.insStaffName">
+      <span class="text">拓展人账号：</span>
+      <span class="value">{{row.insStaffName}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.registSource">
+      <span class="text">注册来源：</span>
+      <span class="value">{{row.registSource}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.regDate">
+      <span class="text">注册时间：</span>
+      <span class="value">{{row.regDate}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.nickName">
+      <span class="text">微信昵称：</span>
+      <span class="value">{{row.nickName}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.openId">
+      <span class="text">OpenID：</span>
+      <span class="value">{{row.openId}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.sex">
+      <span class="text">性别：</span>
+      <span class="value">{{row.sex}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.province">
+      <span class="text">所在省：</span>
+      <span class="value">{{row.province}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.city">
+      <span class="text">所在市：</span>
+      <span class="value">{{row.city}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="row.country">
+      <span class="text">所在区县：</span>
+      <span class="value">{{row.country}}</span>
+    </div>
+  </div>
+</div>

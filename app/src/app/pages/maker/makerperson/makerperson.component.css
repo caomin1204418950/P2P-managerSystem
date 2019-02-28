@@ -1,0 +1,47 @@
+
+.gutter-box {
+    padding: 5px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+.nz-button {
+  margin-left: 8px
+}
+.head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.headright{
+  display: flex;
+  flex-direction: row;
+  align-items: center
+}
+.a{
+  width: 156px;
+  height: 270px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: white;
+  z-index: 10;
+  margin-top: 0;
+  text-align: center;
+  border: 1px solid #CCCCCC
+}
+.group_option{
+  width: 100%;
+  height: 45px;
+  text-align: center;
+  line-height: 45px;
+  border-top: 1px solid #CCCCCC;
+  cursor:pointer
+}
+.pagination{
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

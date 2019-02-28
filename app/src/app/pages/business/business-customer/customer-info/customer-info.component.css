@@ -1,0 +1,18 @@
+.inline_row{width: 1020px;}
+.inline{float: left; font-size: 14px;color: #333;height: 64px;line-height: 34px;padding-bottom: 30px;width: 100%;}
+.inline.col_6{width: calc(50% - 40px);}
+.inline.col_6{margin-right: 40px;}
+.inline .text{padding-left: 20px; display: block;float: left;width: 156px;}
+.inline .value{display: block;float: left;padding-left: 20px; height: 100%;border-bottom: 1px solid #e2e2e2;width: calc(100% - 156px);}
+.inline.row_2 { height: auto; min-height: 84px; line-height: 24px; }
+.inline.row_2 .value { padding-bottom: 5px; min-height: 24px; }
+.inline.picture {position: relative;}
+/* .inline.picture .value {
+    border-bottom: 0;
+} */
+.inline.picture .value img {
+    display: block;
+    height: 40px;
+    position: absolute;
+    top: -11px;
+}

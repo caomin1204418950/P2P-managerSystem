@@ -1,0 +1,30 @@
+td{
+    width: 25%;
+}
+.btnContainer{
+    width:100%;
+    height:70px;
+    line-height: 70px;
+}
+.default{
+    background-color: #CCCCCC;
+    border-color: #CCCCCC;
+}
+.pagination{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+.idCard{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.idcard_item{
+    width: 400px;
+    height: 250px;
+    margin: 20px 150px;
+}

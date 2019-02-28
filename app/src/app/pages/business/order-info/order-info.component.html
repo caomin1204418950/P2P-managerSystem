@@ -1,0 +1,185 @@
+<app-crumb></app-crumb>
+<div class="white_bg list_box" style="margin-bottom:30px;">
+  <div class="g_tit mb20">
+    <h5>订单需求信息</h5>
+  </div>
+  <div class="inline_row clearfix" *ngIf="rows.loanApply">
+    <div class="inline col_6">
+      <span class="text">订单号</span>
+      <span class="value">{{rows.loanApply.no}}</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">订单状态</span>
+      <span class="value red" *ngIf="rows.loanApply.status=='0'">处理中</span>
+      <span class="value red" *ngIf="rows.loanApply.status=='1'">已终止</span>
+      <span class="value red" *ngIf="rows.loanApply.status=='2'">处理完成</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix" *ngIf="rows">
+    <div class="inline">
+      <span class="text">客户名称</span>
+      <span class="value">{{rows.loanApply.etpName}}
+        <a class="blue ml40" href="{{basicInfoUrl}}" target="_blank">查看工商信息详情</a>
+      </span>
+    </div>
+  </div>
+  <div class="inline_row clearfix" *ngIf="rows">
+    <div class="inline col_6">
+      <span class="text">申请贷款金额</span>
+      <span class="value">{{rows.loanApply.amount}}万元</span>
+    </div>
+    <div class="inline col_6">
+      <span class="text">申请贷款期限</span>
+      <span class="value">{{rows.loanApply.term}}个月</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix" *ngIf="rows">
+    <div class="inline col_6">
+      <span class="text">申请产品</span>
+      <span class="value">{{rows.loanApply.productName}}</span>
+    </div>
+    <!-- </div>
+  <div class="inline_row clearfix" *ngIf="rows"> -->
+    <div class="inline col_6">
+      <span class="text">确认签约时间</span>
+      <span class="value">{{transformTime(rows.loanApply.appointConfirmTime)}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix" *ngIf="rows">
+    <div *ngFor="let item of rows.applyDataList">
+      <div class="imgBox clearfix" *ngIf="item.type=='multiplePic'">
+        <h6 class="text">{{item.controlName}}</h6>
+        <div class="multiImg content-container">
+          <div class="swiper-container" [swiper]='config'>
+            <div class="swiper-wrapper">
+              <div class="swiper-slide" *ngFor="let url of item.value">
+                <div class="swiper-zoom-container">
+                  <img src="{{url}}" alt="{{url}}" class="cur_img" (click)="imgScale(url)">
+                </div>
+              </div>
+            </div>
+            <!-- 如果需要导航按钮 -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>
+        </div>
+      </div>
+      <div class="imgBox clearfix" *ngIf="item.type=='pic'">
+        <h6 class="text">{{item.controlName}}</h6>
+        <div class="multiImg content-container">
+          <div class="swiper-container" [swiper]='config'>
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="swiper-zoom-container">
+                  <img src="{{item.value}}" alt="{{item.value}}" class="cur_img" (click)="imgScale(item.value)">
+                </div>
+              </div>
+            </div>
+            <!-- 如果需要导航按钮 -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="inline col_6" *ngFor="let item of rows.applyDataList" [ngClass]="{'hidden': item.type=='multiplePic'||item.type=='pic'}">
+      <span class="text">{{item.controlName}}</span>
+      <span class="value" *ngIf="item.type=='dateTime'">{{transformTime(item.value)}}</span>
+      <span class="value" *ngIf="item.type!='dateTime'">{{item.value}}</span>
+    </div>
+  </div>
+</div>
+<div class="white_bg list_box" style="margin-bottom:30px;" *ngIf="rows.loanContractInfo">
+  <div class="g_tit mb20">
+    <h5>平台核准信息</h5>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">批复金额（万元）</span>
+      <span class="value">{{rows.loanContractInfo.approvalAmount}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="rows.loanContractInfo.approvalTerm">
+      <span class="text">批复期限</span>
+      <span class="value">{{rows.loanContractInfo.approvalTerm+'个月'}}</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6">
+      <span class="text">还款方式</span>
+      <span class="value">{{rows.loanContractInfo.repayMethod}}</span>
+    </div>
+    <div class="inline col_6" *ngIf="rows.loanContractInfo.loanRate">
+      <span class="text">核准利率（年化）</span>
+      <span class="value">{{rows.loanContractInfo.loanRate}}%</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix" *ngIf="rows.loanContractInfo.serviceRate">
+    <div class="inline col_6">
+      <span class="text">居间费率</span>
+      <span class="value">{{rows.loanContractInfo.serviceRate}}%</span>
+    </div>
+  </div>
+</div>
+<div class="white_bg list_box" style="margin-bottom:30px;" *ngIf="rows.repayPlan">
+  <div class="g_tit mb20">
+    <h5>还款计划</h5>
+  </div>
+  <div class="cur_table">
+    <table width="100%" border="0">
+      <thead>
+        <tr>
+          <td>期数</td>
+          <td>应还总金额（万元）</td>
+          <td>应还本金（万元）</td>
+          <td>应还利息</td>
+          <td>最后还款时间</td>
+          <td>备注</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{rows.repayPlan.period}}</td>
+          <td>{{rows.repayPlan.amount}}</td>
+          <td>{{rows.repayPlan.principal}}</td>
+          <td>{{rows.repayPlan.interest}}</td>
+          <td>{{rows.repayPlan.finTime}}</td>
+          <td>{{rows.repayPlan.remark}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="white_bg list_box" style="margin-bottom:30px;">
+  <div class="g_tit mb20">
+    <h5>进度详情</h5>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6" style='text-align:center;font-weight: bold;'>
+      时间
+    </div>
+    <div class="inline col_6" style='text-align:center;font-weight: bold;'>
+      进度说明
+    </div>
+  </div>
+  <div class="inline_row clearfix">
+    <div class="inline col_6" style='text-align:center;'>
+      {{rows.loanApply.createDate}}
+    </div>
+    <div class="inline col_6" style='text-align:center;'>
+      <span>申请成功</span>
+    </div>
+  </div>
+  <div class="inline_row clearfix" *ngIf="rows.loanApply.status=='1'||rows.loanApply.status=='2'">
+    <div class="inline col_6" style='text-align:center;'>
+      {{rows.loanApply.updateDate}}
+    </div>
+    <div class="inline col_6" style='text-align:center;'>
+      <span *ngIf="rows.loanApply.status=='1'">已终止</span>
+      <span *ngIf="rows.loanApply.status=='2'">处理完成</span>
+    </div>
+  </div>
+</div>
+
+<div class="mask" *ngIf="active">
+  <pic-scale class="picBox" [ImgUrl]="imgUrl" (closeImg)="close($event)"></pic-scale>
+</div>
