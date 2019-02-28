@@ -49,7 +49,7 @@
         <nz-table #rowSelectionTable [nzData]="data" nzShowPagination=false>
           <thead>
             <tr>
-              <th nzShowCheckbox></th>
+              <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event,data)"></th>
               <th>申请编号</th>
               <th>手机号码</th>
               <th>结算金额</th>
@@ -63,7 +63,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of rowSelectionTable.data">
-              <td nzShowCheckbox (nzCheckedChange)="checked($event,data.no,data)"></td>
+              <td nzShowCheckbox [(nzChecked)]="data.check" (nzCheckedChange)="checked($event,data.no,data)"></td>
               <td>{{data.no}}</td>
               <td>{{data.mobile}}</td>
               <td>{{data.amount}}</td>

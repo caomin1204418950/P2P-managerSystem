@@ -33,6 +33,9 @@ export class PartnerapplyComponent implements OnInit {
   // 批量通过、拒绝变量
   selected=[]
   type
+  //全选
+  indeterminate=false
+  allChecked=false
   constructor(
     private http: HttpService,
     private dateTransform: DateTransformService,
@@ -71,6 +74,7 @@ export class PartnerapplyComponent implements OnInit {
       if(item.status==2){
         item.statusText='不通过'
       }
+      item.check=false
       return
     })
     this.data=list
@@ -191,9 +195,43 @@ export class PartnerapplyComponent implements OnInit {
           return false
       }
     }
+    if(this.selected.length==this.data.length){
+        this.allChecked=true
+        this.indeterminate=false
+    }
+    else if(this.selected.length==0){
+        this.allChecked=false
+        this.indeterminate=false
+    }
+    else{
+        this.allChecked=false
+        this.indeterminate=true
+    }
   }
 
-  
+  //全选
+ 
+  checkAll($event) {
+    if($event==true){
+        this.allChecked=true
+        this.indeterminate=false
+    }else{
+        this.allChecked=false
+        this.indeterminate=false
+    }
+    if(this.allChecked==true){
+         this.selected = this.data.map(item=>{
+            item.check=true
+            return item.id
+        })
+    }
+    if(this.allChecked==false){
+        this.selected = this.data.map(item=>{
+            item.check=false
+        })
+        this.selected=[]
+    }
+}
   
   //card one
   disabledStartDate = (startValue: Date): boolean => {

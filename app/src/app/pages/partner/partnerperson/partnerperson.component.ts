@@ -35,6 +35,10 @@ export class PartnerpersonComponent implements OnInit {
   //等级显示变量
   listShow=true
 
+  //全选
+  indeterminate=false
+  allChecked=false
+  list=[]
   constructor(
     private http: HttpService,
     private dateTransform: DateTransformService,
@@ -66,9 +70,18 @@ export class PartnerpersonComponent implements OnInit {
       '&pageNum=' + this.pageNum +
       '&pageSize=' + 10
     ).subscribe(res => {
+      this.allChecked=false
       this.total=res.result.total
-      this.data=res.result.list
+      this.list=res.result.list
+      this.addCheckBox()
     })
+  }
+  addCheckBox(){
+    this.list.map(item=>{
+          item.check=false
+        return
+      })
+      this.data=this.list
   }
 
   search() {
@@ -137,7 +150,42 @@ export class PartnerpersonComponent implements OnInit {
       })
       this.selected=selected
     }
+    if(this.selected.length==this.data.length){
+        this.allChecked=true
+        this.indeterminate=false
+    }
+    else if(this.selected.length==0){
+        this.allChecked=false
+        this.indeterminate=false
+    }
+    else{
+        this.allChecked=false
+        this.indeterminate=true
+    }
   }
+  //全选
+ 
+  checkAll($event) {
+    if($event==true){
+        this.allChecked=true
+        this.indeterminate=false
+    }else{
+        this.allChecked=false
+        this.indeterminate=false
+    }
+    if(this.allChecked==true){
+         this.selected = this.data.map(item=>{
+            item.check=true
+            return item.id
+        })
+    }
+    if(this.allChecked==false){
+        this.selected = this.data.map(item=>{
+            item.check=false
+        })
+        this.selected=[]
+    }
+}
   //card one
   disabledStartDate = (startValue: Date): boolean => {
     if (!startValue || !this.endValue) {

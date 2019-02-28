@@ -41,7 +41,9 @@ export class MakerpersonComponent implements OnInit {
   choosedGroup
   total
   
-
+//全选
+    indeterminate=false
+    allChecked=false
   constructor(
     private dateTransform: DateTransformService,
     private http: HttpService,
@@ -62,6 +64,7 @@ export class MakerpersonComponent implements OnInit {
       '&pageNum=' + this.pageNum +
       '&pageSize=' + 10)
       .subscribe(e => {
+        this.allChecked=false
         this.list = e.result.list
         this.total = e.result.total
         this.pushSwitchValue()
@@ -74,6 +77,7 @@ export class MakerpersonComponent implements OnInit {
       }
       if(item.status===0){
         item.switchValue=false
+        item.check=false
       }
       return
     })
@@ -169,7 +173,41 @@ export class MakerpersonComponent implements OnInit {
       })
       this.selected=selected
     }
+    if(this.selected.length==this.data.length){
+        this.allChecked=true
+        this.indeterminate=false
+    }
+    else if(this.selected.length==0){
+        this.allChecked=false
+        this.indeterminate=false
+    }
+    else{
+        this.allChecked=false
+        this.indeterminate=true
+    }
   }
+  //全选
+  checkAll($event) {
+    if($event==true){
+        this.allChecked=true
+        this.indeterminate=false
+    }else{
+        this.allChecked=false
+        this.indeterminate=false
+    }
+    if(this.allChecked==true){
+         this.selected = this.data.map(item=>{
+            item.check=true
+            return item.id
+        })
+    }
+    if(this.allChecked==false){
+        this.selected = this.data.map(item=>{
+            item.check=false
+        })
+        this.selected=[]
+    } 
+}
   //调整人员分组
   clickedAdjugeGroup(){
     if(this.selected.length==0){

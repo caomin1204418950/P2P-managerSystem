@@ -24,12 +24,9 @@
             <div class="gutter-box">
               <nz-select style="width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="所有" [(ngModel)]="findUse">
                 <nz-option nzLabel="所有" nzValue=""></nz-option>
-                <nz-option nzLabel="佣金收入" nzValue="1"></nz-option>
-                <nz-option nzLabel="佣金结算" nzValue="2"></nz-option>
-                <nz-option nzLabel="返利奖金" nzValue="3"></nz-option>
-                <nz-option nzLabel="人脉奖金" nzValue="4"></nz-option>
-                <nz-option nzLabel="奖金结算" nzValue="5"></nz-option>
-                <nz-option nzLabel="调账" nzValue="6"></nz-option>
+                <nz-option nzLabel="返利奖金" nzValue="1"></nz-option>
+                <nz-option nzLabel="人脉奖金" nzValue="2"></nz-option>
+                <nz-option nzLabel="奖金结算" nzValue="3"></nz-option>
               </nz-select>
             </div>
           </div>
@@ -72,13 +69,10 @@
         <tbody>
           <tr *ngFor="let data of rowSelectionTable.data">
             <td>{{data.createDate}}</td>
-          <td>{{data.realName}}
-              <span *ngIf="data.type==1">佣金收入</span>
-              <span *ngIf="data.type==2">佣金结算</span>
-              <span *ngIf="data.type==3">返利奖金</span>
-              <span *ngIf="data.type==4">人脉奖金</span>
-              <span *ngIf="data.type==5">奖金结算</span>
-              <span *ngIf="data.type==6">调账</span>
+          <td>
+              <span *ngIf="data.type==1">返利奖金</span>
+              <span *ngIf="data.type==2">人脉奖金</span>
+              <span *ngIf="data.type==3">奖金结算</span>
           </td>
           <td>
             <span *ngIf="data.incurredAmount>0">+{{data.incurredAmount}}</span>

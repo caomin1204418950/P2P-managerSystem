@@ -42,8 +42,8 @@ export class MakergroupComponent implements OnInit {
   oldRemark
   
   //全选
-//   displayData=[]
-//   allChecked = false;
+  indeterminate=false
+  allChecked=false
   constructor(
     private http: HttpService,
     private message: NzMessageService
@@ -72,6 +72,7 @@ export class MakergroupComponent implements OnInit {
       if(item.status===0){
         item.switchValue=false
       }
+      item.check=false
       return
     })
     this.data=this.list
@@ -141,7 +142,42 @@ export class MakergroupComponent implements OnInit {
       })
       this.selected=selected
     }
+    if(this.selected.length==this.data.length){
+        this.allChecked=true
+        this.indeterminate=false
+    }
+    else if(this.selected.length==0){
+        this.allChecked=false
+        this.indeterminate=false
+    }
+    else{
+        this.allChecked=false
+        this.indeterminate=true
+    }
   }
+    //全选
+ 
+    checkAll($event) {
+        if($event==true){
+            this.allChecked=true
+            this.indeterminate=false
+        }else{
+            this.allChecked=false
+            this.indeterminate=false
+        }
+        if(this.allChecked==true){
+             this.selected = this.data.map(item=>{
+                item.check=true
+                return item.id
+            })
+        }
+        if(this.allChecked==false){
+            this.selected = this.data.map(item=>{
+                item.check=false
+            })
+            this.selected=[]
+        }
+    }
   clickedDisAble(){
     if(this.selected.length==0){
       this.message.error('请至少选择一个分组！')
@@ -161,10 +197,12 @@ export class MakergroupComponent implements OnInit {
 
     ).subscribe(res => {
       if (res.code == '200') {
+        this.allChecked=false
         this.getGroupData();
         this.message.success('禁用成功',{nzDuration: 1500})
       }
       else {
+        this.allChecked=false
         this.message.error(res.reason);
         this.getGroupData()
       }
@@ -197,10 +235,12 @@ export class MakergroupComponent implements OnInit {
 
     ).subscribe(res => {
       if (res.code == '200') {
+        this.allChecked=false
         this.getGroupData()
         this.message.success('启用成功',{nzDuration: 1500})
       }
       else {
+        this.allChecked=false
         this.message.error(res.reason);
         this.getGroupData()
       }
@@ -303,17 +343,5 @@ export class MakergroupComponent implements OnInit {
       })
   }
   
-  //全选
- 
-//   checkAll($event) {
-//       console.log($event)
-//       if($event==true){
-          
-//            this.selected = this.data.map(item=>{
-//               return item.id
-//           })
-          
-//       }
-      
-//   }
+
 }

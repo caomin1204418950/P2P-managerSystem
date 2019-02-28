@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    image: ccr.ccs.tencentyun.com/bjd_bigdata/kalanchoe-manager-front:${VERSION}
+    environment:
+      - CAS_SERVER=http://kalanchoe-sso.e-masspick.com
+      - API_SERVER=http://zuul:8040
+      - AUTH_ID=3316dc67-2517-46f5-958d-1cd46d4eab58
+      - NODE_PORT=8080
+      - NODE_ENV=pro
+      - NODE_SERVER=http://kalanchoe-manager.e-masspick.com
+    ports:
+      - "6400:8080"
+    networks:
+      - springcloud-overlay
+networks:
+  springcloud-overlay:
+    external:
+      name: springcloud-overlay
